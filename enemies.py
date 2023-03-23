@@ -1,3 +1,4 @@
+from colors import bcolors
 # clase de los enemigos
 # enemigo goblin
 class Goblin():
@@ -7,7 +8,7 @@ class Goblin():
         self.power = power
         
     def description(self):
-        return f"Un {self.type} con {self.health} puntos de vida y {self.power} puntos de ataque."
+        return f"Un {bcolors.FAIL+self.type+bcolors.ENDC} con {self.health} puntos de vida y {self.power} puntos de ataque."
 
     def reset(self):
         self.health = 5
@@ -22,7 +23,7 @@ class Zombie():
         self.power = power
         
     def description(self):
-        return f"Un {self.type} con {self.health} puntos de vida y {self.power} puntos de ataque."
+        return f"Un {bcolors.FAIL+self.type+bcolors.ENDC} con {self.health} puntos de vida y {self.power} puntos de ataque."
     
     def reset(self):
         self.health = 3
@@ -36,7 +37,7 @@ class Shadow():
         self.power = power
         
     def description(self):
-        return f"Un {self.type} con {self.health} puntos de vida y {self.power} puntos de ataque."
+        return f"Un {bcolors.FAIL+self.type+bcolors.ENDC} con {self.health} puntos de vida y {self.power} puntos de ataque."
     
     def reset(self):
         self.health = 1
@@ -50,7 +51,7 @@ class Wizard():
         self.power = power
         
     def description(self):
-        return f"Un {self.type} con {self.health} puntos de vida y {self.power} puntos de ataque."
+        return f"Un {bcolors.FAIL+self.type+bcolors.ENDC} con {self.health} puntos de vida y {self.power} puntos de ataque."
     
     def reset(self):
         self.health = 5
