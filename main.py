@@ -45,11 +45,11 @@ def actualizarMaximoVidaPersonaje(personaje):
     global maximoVidaPersonaje
     maximoVidaPersonaje = personaje.health
 
-def actualizarNumEnemigosEliminados():
-    """Funcion para actualizar el numero de enemigos eliminados
-    """
-    global numEnemigosEliminados
-    numEnemigosEliminados = str(enemigosEliminados)
+# def actualizarNumEnemigosEliminados():
+#     """Funcion para actualizar el numero de enemigos eliminados
+#     """
+#     global numEnemigosEliminados
+#     numEnemigosEliminados = str(enemigosEliminados)
 
 # funcion para crear un enemigo
 def crearEnemigo():
@@ -117,8 +117,33 @@ def textoSubirNivel():
     print("Subes de Nivel!")
     print(separadores2)
     print(" ")
-    print("Estas en el Nivel ", nivel,"!")
+    print(bcolors.OKCYAN+"Estas en el Nivel ", nivel,"!"+bcolors.ENDC)
     print(" ")
+    print("Ha aumentado tu vidad total en "+bcolors.OKGREEN+"2 puntos"+bcolors.ENDC)
+    print("Ahora dispones de un total de "+bcolors.OKGREEN, maximoVidaPersonaje, " puntos "+bcolors.ENDC+"de vida.")
+    print(" ")
+
+# funcion para comprobar si se sube de nivel
+def comprobarSubidaNivel():
+    """Funcion para comprobar si se sube de nivel
+    Comprueba el numero de enemigos eliminados 
+    y si es multiplo de 5 sube de nivel
+    """
+    if nivel == 1:
+        if enemigosEliminados == 5:
+            print(enemigosEliminados)
+            funcionesSubirNivel()
+            textoSubirNivel()
+    else:
+        if enemigosEliminados % 5 == 0:
+            print(enemigosEliminados)
+            funcionesSubirNivel()
+            textoSubirNivel()
+
+def funcionesSubirNivel():
+    global maximoVidaPersonaje
+    maximoVidaPersonaje = maximoVidaPersonaje + 2
+    
 
 # funcion para mostrar un tesoro
 def tesoroSorpresa(personaje):
@@ -130,9 +155,11 @@ def tesoroSorpresa(personaje):
     print("Has encontrado un "+bcolors.OKGREEN+"Tesoro!"+bcolors.ENDC)
     print(separadores)
     print(" ")
-    print("En el tesoro hay: ")
-    print("1. Un arma")
-    print("2. Una pocion de vida")
+    print(bcolors.WARNING+"En el tesoro hay: ")
+    print("1. Un arma mejorada (+2 de ataque)")
+    print("2. Una pocion de vida (recupera todos tus puntos de vida)")
+    print(separadores2+bcolors.ENDC)
+    print(bcolors.OKGREEN+personaje.name+bcolors.ENDC+" tiene "+bcolors.OKGREEN+str(personaje.health)+bcolors.ENDC+" puntos de vida y "+bcolors.OKGREEN+str(personaje.power)+bcolors.ENDC+" puntos de ataque!")
     opcionesTesoro(personaje)
 
 # funcion para mostrar las opciones del tesoro
@@ -174,7 +201,7 @@ def atacar(personaje, enemigo):
     time.sleep(0.5)
     
     enemigo.health -= personaje.power
-    print(f"Tu personaje ha hecho {personaje.power} puntos de daño al enemigo.")
+    print(f"{bcolors.OKGREEN+personaje.name+bcolors.ENDC} ha hecho {personaje.power} puntos de daño al enemigo.")
     
     # Comparamos si el enemigo ha muerto
     if enemigo.health <= 0:
@@ -193,7 +220,7 @@ def atacar(personaje, enemigo):
         # Comparamos si el personaje ha muerto
         if personaje.health <= 0:
             # Si mi personaje ha muerto, el juego termina
-            print(f"Tu personaje tiene {personaje.health} puntos de vida, ha muerto.")
+            print(f"{bcolors.OKGREEN+personaje.name+bcolors.ENDC} tiene {personaje.health} puntos de vida, ha muerto.")
             print(f"El enemigo se ha quedado con {enemigo.health} puntos de vida.")
             print(" ")
             print("Has perdido el combate!")
@@ -208,7 +235,7 @@ def atacar(personaje, enemigo):
                 quit()
         else:
             # Si el personaje no ha muerto, se muestran los puntos de vida de ambos
-            print(f"Tu personaje tiene {personaje.health} puntos de vida.")
+            print(f"{bcolors.OKGREEN+personaje.name+bcolors.ENDC} tiene {personaje.health} puntos de vida.")
             print(f"El enemigo tiene {enemigo.health} puntos de vida.")
             print(" ")
             print(separadores)
@@ -231,7 +258,7 @@ def huir(personaje, enemigo):
         # Comparamos si el personaje ha muerto
         if personaje.health <= 0:
             # Si mi personaje ha muerto, el juego termina
-            print(f"Tu personaje tiene {personaje.health} puntos de vida, ha muerto.")
+            print(f"{bcolors.OKGREEN+personaje.name+bcolors.ENDC} tiene {personaje.health} puntos de vida, ha muerto.")
             print(f"El enemigo se ha quedado con {enemigo.health} puntos de vida.")
             print(" ")
             print("Has perdido el combate!")
@@ -246,7 +273,7 @@ def huir(personaje, enemigo):
                 quit()
         else:
             # Si el personaje no ha muerto, se muestran los puntos de vida de ambos
-            print(f"Tu personaje tiene {personaje.health} puntos de vida.")
+            print(f"{bcolors.OKGREEN+personaje.name+bcolors.ENDC} tiene {personaje.health} puntos de vida.")
             print(f"El enemigo tiene {enemigo.health} puntos de vida.")
             print(" ")
             print(separadores)
@@ -334,15 +361,7 @@ def main():
 
         while (enemigo.health >= 0 or enemigo != None) and personaje.health > 0:
 
-            # comprobar los enemigos eliminados para subir de nivel
-            if nivel == 1:
-                actualizarNumEnemigosEliminados()
-                if numEnemigosEliminados[-1] == "5":
-                    textoSubirNivel()
-            else:
-                actualizarNumEnemigosEliminados()
-                if numEnemigosEliminados[-1] == "0" or "5":
-                    textoSubirNivel()
+            
 
 
             opcion = opciones()
@@ -355,8 +374,12 @@ def main():
                     if contadorEnemigos % 3 == 0:
                         tesoroSorpresa(personaje)
                     # crearSiguienteEnemigo()
+                    
+                    comprobarSubidaNivel()
+                    
                     print("Has encontrado otro "+bcolors.FAIL+"Enemigo!"+bcolors.ENDC)
                     sumarContadorEnemigos()
+                    
                     enemigo = crearEnemigo()
                     
                     print(separadores)
